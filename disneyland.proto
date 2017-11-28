@@ -35,6 +35,21 @@ message ListJobsRequest {
     string kind = 3;
 }
 
+message Queue {
+    string name = 1;
+
+    enum Policy {
+        FIFO = 0;
+        BALANCED = 1;
+    }
+
+    Policy policy = 2;
+}
+
+message Length {
+    uint32 how_many = 1;
+}
+
 service Disneyland {
     rpc CreateJob (Job) returns (Job) {}
     rpc GetJob (RequestWithId) returns (Job) {}
@@ -42,4 +57,6 @@ service Disneyland {
     rpc ModifyJob (Job) returns (Job) {} /** Merges passed Status, MetricValue and Metadata to db */
     rpc PullPendingJobs (ListJobsRequest) returns (ListOfJobs) {}
     rpc DeleteJob(RequestWithId) returns (Job) {}
+
+    rpc GetLengthQueue (Queue) returns (Length) {}
 }
